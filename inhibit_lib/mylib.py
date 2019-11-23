@@ -7,7 +7,8 @@ def is_file(file_csv):
     if os.path.exists(file_csv):
         print(f'\nArquivo CSV: {file_csv}\n')
     else:
-        print(f'\nOops, algo deu ruim!\nArquivo CSV não encontrado: {file_csv}')
+        print(
+            f'\nOops, algo deu ruim!\nArquivo CSV não encontrado: {file_csv}')
         sys.exit()
 
 
@@ -17,7 +18,8 @@ def col_width(ws, factor=1.1):
         max_len = 0
         for cell in col:
             max_len = max(max_len, len(str(cell.value)))
-        ws.column_dimensions[col[0].column_letter].width = (max_len + 3) * factor
+        ws.column_dimensions[col[0].column_letter].width = (
+            max_len + 3) * factor
 
 
 def range_format(ws, cell_range, font=None, alignment=None, border=None, fill=None):
@@ -58,11 +60,13 @@ def view_settings(ws, now):
     ws.freeze_panes = "A3"  # Congela painéis
     ws.sheet_view.showGridLines = False  # Linhas de grade
     ws.print_title_rows = '1:2'  # Linhas como cabeçalho
-    ws.oddFooter.right.text = "Página &[Page] de &N"  # Rodapé à direita: Página
-    ws.oddFooter.left.text = f'Impressão de {now.strftime("%d-%m-%Y %H:%M")}'  # Rodapé à esquerda data e hora
+    # Rodapé à direita: Página
+    ws.oddFooter.right.text = "Página &[Page] de &N"
+    # Rodapé à esquerda data e hora
+    ws.oddFooter.left.text = f'Impressão de {now.strftime("%d-%m-%Y %H:%M")}'
 
 
-def write_file(wb, outfile):
+def write_file(wb, outfile, execute=False):
     try:
         wb.save(outfile)  # Grava o arquivo excel
     except PermissionError:
@@ -72,4 +76,11 @@ def write_file(wb, outfile):
         print(f'Oops, deu ruim:')
         raise Exception
     else:
-        print(f'Arquivo Excel gerado com sucesso:\n\t{outfile}')
+        if execute:
+            try:
+                print(f'Abrindo arquivo Excel:\n{outfile}')
+                os.system(outfile)
+            except Exception:
+                print(f'Não foi possível abrir o arquivo: {outfile}')
+        else:
+            print(f'Arquivo Excel gerado com sucesso:\n\t{outfile}')
