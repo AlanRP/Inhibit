@@ -1,6 +1,29 @@
 # coding: latin1
 import os.path
 import sys
+import json
+
+
+class Color:
+    """
+    Traduzir o nome da cor para o formato rgb hex, 000000 à FFFFFF (preto à branco)
+    file: dicionario .json
+    """
+
+    def __init__(self, file):
+        self.dic = self.loaddict(file)
+
+    @staticmethod
+    def loaddict(input):
+        with open(input, 'r') as file:
+            data = json.loads(file.read())
+            return data
+
+    def clr(self, c):
+        if isinstance(c, str):
+            if c in self.dic.keys():
+                return self.dic[c]
+        return c
 
 
 def is_file(file_csv):
@@ -9,7 +32,7 @@ def is_file(file_csv):
         print(f'\nArquivo CSV: {file_csv}\n')
     else:
         print(
-            f'\nOops, algo deu ruim!\nArquivo CSV nÃ£o encontrado: {file_csv}')
+            f'\nOops, algo deu ruim!\nArquivo CSV não encontrado: {file_csv}')
         sys.exit()
 
 

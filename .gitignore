@@ -131,3 +131,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+color.json
+named_colors.pdf
